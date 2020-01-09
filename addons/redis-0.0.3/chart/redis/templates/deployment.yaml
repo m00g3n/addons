@@ -12,12 +12,17 @@ spec:
   strategy:
     rollingUpdate:
       maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ template "redis.fullname" . }}
+      release: "{{ .Release.Name }}"
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "true"
       labels:
         app: {{ template "redis.fullname" . }}
+        release: "{{ .Release.Name }}"
     spec:
       {{- if .Values.nodeSelector }}
       nodeSelector:
